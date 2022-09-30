@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $# -lt 3 ] ; then
-    echo "Usage: $0 <file> <first> <last>"
+    echo "Usage: $0 <file> <first> <last>" >& 2
     exit 1
 fi
 
