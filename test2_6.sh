@@ -6,7 +6,7 @@ if [ $# -ne 1 ] ; then
 fi
 
 sighup_handler() {
-    echo "SIGHUP trapped" >& 2 # DEBUG
+    echo "SIGHUP trapped" >& 2  # DEBUG
     {
         sleep 30
         kill $$
