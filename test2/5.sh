@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 quit_flag=0
 
