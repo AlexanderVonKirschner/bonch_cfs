@@ -42,7 +42,7 @@ struct app_ctx {
     int ui_pid;
     int led_fd_array[2];
     enum led_id active_led;
-    struct timespec next_switch_time;
+    struct timespec timeout;
     sigset_t curr_mask, orig_mask;
     int quit_flag;
     int ret_code;
@@ -120,8 +120,8 @@ static int app_start(struct app_ctx *ctx)
     led_off(ctx->led_fd_array[li_red]);
     ctx->active_led = li_green;
 
-    ctx->next_switch_time.tv_sec = timeo_sec;
-    ctx->next_switch_time.tv_nsec = timeo_nsec;
+    ctx->timeout.tv_sec = timeo_sec;
+    ctx->timeout.tv_nsec = timeo_nsec;
 
     ctx->quit_flag = 0;
     ctx->ret_code = 0;
@@ -178,8 +178,8 @@ static void handle_signal(struct app_ctx *ctx)
     }
 
     if(last_sig == SIGUSR1 || last_sig == SIGUSR2) {
-    	ctx->next_switch_time.tv_sec = sig_timeo_sec;
-    	ctx->next_switch_time.tv_nsec = sig_timeo_nsec;
+    	ctx->timeout.tv_sec = sig_timeo_sec;
+    	ctx->timeout.tv_nsec = sig_timeo_nsec;
     }
 
     last_sig = 0;
@@ -207,8 +207,8 @@ static void switch_leds(struct app_ctx *ctx)
 
 static void handle_timeout(struct app_ctx *ctx)
 {
-    ctx->next_switch_time.tv_sec = timeo_sec;
-    ctx->next_switch_time.tv_nsec = timeo_nsec;
+    ctx->timeout.tv_sec = timeo_sec;
+    ctx->timeout.tv_nsec = timeo_nsec;
 
     switch_leds(ctx);
 }
@@ -216,8 +216,10 @@ static void handle_timeout(struct app_ctx *ctx)
 static void app_run(struct app_ctx *ctx)
 {
     do {
-        int res = pselect(0, NULL, NULL, NULL,
-                      &ctx->next_switch_time, &ctx->orig_mask);
+        int res;
+
+        res = pselect(0, NULL, NULL, NULL,
+                      &ctx->timeout, &ctx->orig_mask);
         if(res == -1) {
             if(errno == EINTR)
                 handle_signal(ctx);

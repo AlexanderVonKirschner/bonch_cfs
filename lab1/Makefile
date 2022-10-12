@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -ggdb -Wall -Wextra -O2
+CFLAGS = -g -ggdb -Wall -Wextra -O2 -fno-strict-aliasing
 
 GOALS = ui prog
 LIBS = -lncurses -lcdk
