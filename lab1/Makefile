@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -ggdb -Wall -Wextra -ansi -pedantic
+CFLAGS = -g -ggdb -Wall -Wextra
 
 GOALS = ui prog
 LIBS = -lncurses -lcdk
@@ -14,7 +14,7 @@ all: $(GOALS)
 ui: ui.c
 	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
 
-prog: main.c
+prog: prog.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 

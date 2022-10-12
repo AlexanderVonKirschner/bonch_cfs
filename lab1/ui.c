@@ -16,12 +16,12 @@
 
 
 
-static volatile sig_atomic_t was_sigint = 0;
+static volatile sig_atomic_t was_ctrl_c = 0;
 static void sighdl(int signo)
 {
     switch(signo) {
-    case SIGINT:
-        was_sigint = 1;
+    case SIGQUIT:
+        was_ctrl_c = 1;
         break;
     default:
         {}
@@ -107,14 +107,14 @@ static int app_start(int argc, char **argv, struct app_ctx *ctx)
     sa.sa_handler = &sighdl;
     sa.sa_flags = 0;
     sigfillset(&sa.sa_mask);
-    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGQUIT, &sa, NULL);
 
     return 1;
 }
 
 static void app_run(struct app_ctx *ctx)
 {
-    while(!was_sigint) {
+    while(!was_ctrl_c) {
         int ch = activateCDKDialog(ctx->dialog, NULL);
         switch(ch) {
         case 0:
