@@ -135,17 +135,23 @@ static void app_break(struct app_ctx *ctx, int ret)
 }
 
 
-static void handle_signal(struct app_ctx *ctx)
+static void wait_the_child(struct app_ctx *ctx)
 {
     int status;
 
+    waitpid(ctx->ui_pid, &status, 0);
+    if(WIFEXITED(status) && WEXITSTATUS(status) == 0)
+        app_break(ctx, 0);
+    else
+        app_break(ctx, 1);
+}
+
+
+static void handle_signal(struct app_ctx *ctx)
+{
     switch(last_sig) {
     case SIGCHLD:
-        wait(&status);
-        if(WIFEXITED(status) && WEXITSTATUS(status) == 0)
-            app_break(ctx, 0);
-        else
-            app_break(ctx, 1);
+        wait_the_child(ctx);
         break;
     case SIGUSR1:
         if(ctx->active_led == li_red) {
@@ -163,17 +169,16 @@ static void handle_signal(struct app_ctx *ctx)
         break;
     case SIGINT:
         kill(ctx->ui_pid, SIGQUIT);
-        app_break(ctx, 0);
         break;
     default:
         {}
     }
-    
+
     if(last_sig == SIGUSR1 || last_sig == SIGUSR2) {
     	ctx->next_switch_time.tv_sec = sig_timeo_sec;
     	ctx->next_switch_time.tv_nsec = sig_timeo_nsec;
     }
-    
+
     last_sig = 0;
 }
 

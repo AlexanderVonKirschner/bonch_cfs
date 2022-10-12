@@ -33,9 +33,6 @@ struct app_ctx {
     CDKSCREEN *screen;
     CDKDIALOG *dialog;
     CDK_PARAMS params;
-#if 0
-    int green, red;
-#endif
 };
 
 
@@ -67,24 +64,6 @@ static CDKDIALOG *create_dialog(CDKSCREEN *screen, CDK_PARAMS *params)
 }
 
 
-#if 0
-static int open_led(const char *path)
-{
-    return open(path, O_WRONLY);
-}
-
-static void led_on(int fd)
-{
-    write(fd, "1", 1);
-}
-
-static void led_off(int fd)
-{
-    write(fd, "0", 1);
-}
-#endif
-
-
 static int app_start(int argc, char **argv, struct app_ctx *ctx)
 {
     struct sigaction sa;
@@ -112,26 +91,17 @@ static int app_start(int argc, char **argv, struct app_ctx *ctx)
     return 1;
 }
 
+
 static void app_run(struct app_ctx *ctx)
 {
     while(!was_ctrl_c) {
         int ch = activateCDKDialog(ctx->dialog, NULL);
         switch(ch) {
         case 0:
-#if 0
-            led_off(ctx->red);
-            led_on(ctx->green);
-#else
             kill(getppid(), SIGUSR1);
-#endif       
             break;
         case 1:
-#if 0
-            led_off(ctx->green);
-            led_on(ctx->red);
-#else
             kill(getppid(), SIGUSR2);
-#endif       
             break;
         default:
             {}
@@ -142,10 +112,6 @@ static void app_run(struct app_ctx *ctx)
 
 static void app_cleanup(struct app_ctx *ctx)
 {
-#if 0
-    close(ctx->green);
-    close(ctx->red);
-#endif
     destroyCDKDialog(ctx->dialog);
     destroyCDKScreen(ctx->screen);
     endCDK();
