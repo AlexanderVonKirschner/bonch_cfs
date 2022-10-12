@@ -64,6 +64,7 @@ static CDKDIALOG *create_dialog(CDKSCREEN *screen, CDK_PARAMS *params)
 }
 
 
+
 static int app_start(int argc, char **argv, struct app_ctx *ctx)
 {
     struct sigaction sa;
@@ -76,7 +77,6 @@ static int app_start(int argc, char **argv, struct app_ctx *ctx)
     if(!ctx->dialog) {
         destroyCDKScreen(ctx->screen);
         endCDK();
-
         fprintf(stderr, "Can't draw the user interface, why?\n");
         return 0;
     }
@@ -90,7 +90,6 @@ static int app_start(int argc, char **argv, struct app_ctx *ctx)
 
     return 1;
 }
-
 
 static void app_run(struct app_ctx *ctx)
 {

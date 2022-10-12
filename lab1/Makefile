@@ -1,11 +1,11 @@
 CC = gcc
-CFLAGS = -g -ggdb -Wall -Wextra
+CFLAGS = -g -ggdb -Wall -Wextra -O2
 
 GOALS = ui prog
 LIBS = -lncurses -lcdk
 
 
-.PHONY: all clean
+.PHONY: all clean rebuild
 
 
 all: $(GOALS)
@@ -20,3 +20,5 @@ prog: prog.c
 
 clean:
 	rm -f $(GOALS)
+
+rebuild: clean all

@@ -69,7 +69,8 @@ static int start_ui()
 
 static int open_leds(int leds[2])
 {
-
+    /* ... */
+    return 1;
 }
 
 
@@ -137,9 +138,11 @@ static void app_break(struct app_ctx *ctx, int ret)
 
 static void wait_the_child(struct app_ctx *ctx)
 {
-    int status;
+    int pid, status;
 
-    waitpid(ctx->ui_pid, &status, 0);
+    do {
+        pid = wait(&status);
+    } while(pid != ctx->ui_pid);
     if(WIFEXITED(status) && WEXITSTATUS(status) == 0)
         app_break(ctx, 0);
     else
