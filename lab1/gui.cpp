@@ -10,7 +10,7 @@
 
 class Button : Fl_Button {
 public:
-    Button(int x, int y, int w, int h, const char *lb = 0)
+    Button(int x, int y, int w, int h, const char *lb)
         : Fl_Button(x, y, w, h, lb)
         { callback(CallbackFunction, 0); }
     virtual ~Button() {}
