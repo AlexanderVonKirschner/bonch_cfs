@@ -56,7 +56,7 @@ public:
 
 class MainWindow : Fl_Window {
     Button *b[2];
-    enum button_space_sizes {
+    enum buttons_space_sizes {
         bspace_h = CommonButton::button_h*2,
         bspace_w = CommonButton::button_w*3
     };
@@ -69,8 +69,7 @@ class MainWindow : Fl_Window {
         win_w = lbox_w
     };
 public:
-    MainWindow()
-        : Fl_Window(win_w, win_h, "User interface")
+    MainWindow() : Fl_Window(win_w, win_h, "User interface")
     {
         Fl_Box *box = new Fl_Box(0, 0, lbox_w, lbox_h,
                             "What the led do you want\nto turn on?");
