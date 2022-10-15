@@ -15,7 +15,7 @@
 
 
 
-static volatile sig_atomic_t last_sig = 0;
+static volatile sig_atomic_t last_sig =  0;
 static void sighdl(int signo)
 {
     last_sig = signo;
@@ -178,8 +178,8 @@ static void handle_signal(struct app_ctx *ctx)
     }
 
     if(last_sig == SIGUSR1 || last_sig == SIGUSR2) {
-    	ctx->timeout.tv_sec = sig_timeo_sec;
-    	ctx->timeout.tv_nsec = sig_timeo_nsec;
+        ctx->timeout.tv_sec = sig_timeo_sec;
+        ctx->timeout.tv_nsec = sig_timeo_nsec;
     }
 
     last_sig = 0;
@@ -218,8 +218,7 @@ static void app_run(struct app_ctx *ctx)
     do {
         int res;
 
-        res = pselect(0, NULL, NULL, NULL,
-                      &ctx->timeout, &ctx->orig_mask);
+        res = ppoll(NULL, 0, &ctx->timeout, &ctx->orig_mask);
         if(res == -1) {
             if(errno == EINTR)
                 handle_signal(ctx);
