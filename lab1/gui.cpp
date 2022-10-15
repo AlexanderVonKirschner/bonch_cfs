@@ -86,6 +86,7 @@ public:
         b[0] = new ButtonGreen(spacing, b_y);
         b[1] = new ButtonRed(CommonButton::button_w + spacing*2, b_y);
         box[1]->box(FL_UP_BOX);
+
         end();
     }
     void Show() { show(); }
