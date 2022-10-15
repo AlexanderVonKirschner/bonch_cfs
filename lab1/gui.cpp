@@ -37,6 +37,7 @@ public:
 class ButtonGreen : public CommonButton {
 public:
     ButtonGreen(int x, int y) : CommonButton(x, y, "Green") {}
+private:
     virtual void OnPress() {
         kill(getppid(), SIGUSR1);
     }
@@ -45,6 +46,7 @@ public:
 class ButtonRed : public CommonButton {
 public:
     ButtonRed(int x, int y) : CommonButton(x, y, "Red") {}
+private:
     virtual void OnPress() {
         kill(getppid(), SIGUSR2);
     }
