@@ -49,17 +49,20 @@ struct app_ctx {
 };
 
 
-static int start_ui()
+static int start_ui(const char *prog)
 {
     int pid;
+    char name[16] = "";
 
+    strcat(name, "./");
+    strcat(name, prog);
     pid = fork();
     if(pid == -1) {
         perror("fork");
         return -1;
     } else if(pid == 0) {
-        execlp("./ui", "./ui", NULL);
-        perror("execlp");
+        execlp(name, name, NULL);
+        perror(prog);
         exit(1);
     } else {
         return pid;
@@ -85,7 +88,7 @@ static void led_off(int led_fd)
 }
 
 
-static int app_start(struct app_ctx *ctx)
+static int app_start(struct app_ctx *ctx, const char *ui)
 {
     struct sigaction sa;
     int ok;
@@ -97,7 +100,7 @@ static int app_start(struct app_ctx *ctx)
     sigaddset(&ctx->curr_mask, SIGINT);
     sigprocmask(SIG_BLOCK, &ctx->curr_mask, &ctx->orig_mask);
 
-    ctx->ui_pid = start_ui();
+    ctx->ui_pid = start_ui(ui);
     if(ctx->ui_pid == -1)
         return 0;
 
@@ -185,10 +188,10 @@ static void handle_signal(struct app_ctx *ctx)
     last_sig = 0;
 }
 
-static void handle_pselect_error(struct app_ctx *ctx)
+static void handle_ppoll_error(struct app_ctx *ctx)
 {
     kill(ctx->ui_pid, SIGQUIT);
-    perror("pselect");
+    perror("ppoll");
     app_break(ctx, 1);
 }
 
@@ -223,7 +226,7 @@ static void app_run(struct app_ctx *ctx)
             if(errno == EINTR)
                 handle_signal(ctx);
             else
-                handle_pselect_error(ctx);
+                handle_ppoll_error(ctx);
         } else if(res == 0) {
             handle_timeout(ctx);
         }
@@ -238,12 +241,14 @@ static void app_cleanup(struct app_ctx *ctx)
 }
 
 
-int main()
+int main(int argc, char **argv)
 {
     struct app_ctx ctx;
+    const char *ui;
     int ok;
 
-    ok = app_start(&ctx);
+    ui = (argc != 2) ? "tui" : argv[1];
+    ok = app_start(&ctx, ui);
     if(!ok)
         return 1;
     app_run(&ctx);

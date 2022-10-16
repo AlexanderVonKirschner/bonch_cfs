@@ -80,7 +80,7 @@ public:
 MainWindow::MainWindow()
     : Fl_Window(win_w, win_h, "User interface")
 {
-    const char *message = "What the led do you want\nto turn on?";
+    const char *message = "What the led do you\nwant to turn on?";
     box[0] = new Fl_Box(0, 0, lbox_w, lbox_h, message);
     box[0]->labelsize(18);
 
