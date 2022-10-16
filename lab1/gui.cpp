@@ -39,7 +39,7 @@ public:
     ButtonGreen(int x, int y) : CommonButton(x, y, "GREEN") {}
 private:
     virtual void OnPress() {
-        kill(getppid(), SIGUSR1);
+        // kill(getppid(), SIGUSR1);
     }
 };
 
@@ -48,7 +48,7 @@ public:
     ButtonRed(int x, int y) : CommonButton(x, y, "RED") {}
 private:
     virtual void OnPress() {
-        kill(getppid(), SIGUSR2);
+        // kill(getppid(), SIGUSR2);
     }
 };
 
@@ -58,8 +58,8 @@ private:
 
 class MainWindow : Fl_Window {
     Fl_Box *box[2];
-    Button *b[2];
-    enum buttons_space_sizes {
+    Button *button[2];
+    enum buttons_box_sizes {
         bspace_h = CommonButton::button_h*2,
         bspace_w = CommonButton::button_w*3
     };
@@ -83,8 +83,8 @@ public:
         int b_y = bspace_h/4 + lbox_h;
         int spacing = bspace_w/(3*3);
         box[1] = new Fl_Box(0, lbox_h, bspace_w, bspace_h);
-        b[0] = new ButtonGreen(spacing, b_y);
-        b[1] = new ButtonRed(CommonButton::button_w + spacing*2, b_y);
+        button[0] = new ButtonGreen(spacing, b_y);
+        button[1] = new ButtonRed(CommonButton::button_w + spacing*2, b_y);
         box[1]->box(FL_UP_BOX);
 
         end();

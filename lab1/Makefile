@@ -1,9 +1,8 @@
 CC = gcc
 CFLAGS = -g -ggdb -Wall -Wextra -O2 -fno-strict-aliasing
 
-GOALS = ui prog
+GOALS = gui tui prog
 LIBS = -lncurses -lcdk
-
 
 .PHONY: all clean rebuild
 
@@ -11,11 +10,14 @@ LIBS = -lncurses -lcdk
 all: $(GOALS)
 
 
-ui: ui.c
+tui: tui.c
 	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
 
 prog: prog.c
 	$(CC) $(CFLAGS) $^ -o $@
+
+gui: gui.cpp
+	g++ -Wall -Wextra $^ -lfltk -o $@
 
 
 clean:

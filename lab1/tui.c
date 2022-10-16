@@ -43,7 +43,8 @@ static CDKDIALOG *create_dialog(CDKSCREEN *screen, CDK_PARAMS *params)
     CDKDIALOG *dialog;
     const char *message[] = {
         "",
-        "<C>What led do you want to turn on?",
+        "<C>What the led do you",
+        "<C>want to turn on?",
         ""
     };
     const char *buttons[] = { "GREEN", "RED" };
