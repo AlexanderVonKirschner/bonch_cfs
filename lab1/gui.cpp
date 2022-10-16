@@ -70,6 +70,7 @@ class MainWindow : Fl_Window {
         win_h = lbox_h + bspace_h,
         win_w = lbox_w
     };
+    enum { font_size = 18 };
 public:
     MainWindow();
     void Show() { show(); }
@@ -82,7 +83,7 @@ MainWindow::MainWindow()
 {
     const char *message = "What the led do you\nwant to turn on?";
     box[0] = new Fl_Box(0, 0, lbox_w, lbox_h, message);
-    box[0]->labelsize(18);
+    box[0]->labelsize(font_size);
 
     int spacing = bspace_w/(3*3);
     int b1_x, b2_x, b_y;
