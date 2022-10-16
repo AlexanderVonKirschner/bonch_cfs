@@ -22,14 +22,14 @@ private:
 
 
 
-class LedCtrlButton : public Button {
+class LedControlButton : public Button {
     int signo;
 public:
     enum button_sizes {
         button_h = 30,
         button_w = 100
     };
-    LedCtrlButton(int x, int y, const char *lb, int sig)
+    LedControlButton(int x, int y, const char *lb, int sig)
         : Button(x, y, button_w, button_h, lb), signo(sig) {}
 private:
     virtual void OnPress() {
@@ -39,14 +39,16 @@ private:
 
 
 
-class ButtonGreen : public LedCtrlButton {
+class ButtonGreen : public LedControlButton {
 public:
-    ButtonGreen(int x, int y) : LedCtrlButton(x, y, "GREEN", SIGUSR1) {}
+    ButtonGreen(int x, int y)
+        : LedControlButton(x, y, "GREEN", SIGUSR1) {}
 };
 
-class ButtonRed : public LedCtrlButton {
+class ButtonRed : public LedControlButton {
 public:
-    ButtonRed(int x, int y) : LedCtrlButton(x, y, "RED", SIGUSR2) {}
+    ButtonRed(int x, int y)
+        : LedControlButton(x, y, "RED", SIGUSR2) {}
 };
 
 
@@ -57,8 +59,8 @@ class MainWindow : Fl_Window {
     Fl_Box *box[2];
     Button *button[2];
     enum buttons_box_sizes {
-        bspace_h = LedCtrlButton::button_h*2,
-        bspace_w = LedCtrlButton::button_w*3
+        bspace_h = LedControlButton::button_h*2,
+        bspace_w = LedControlButton::button_w*3
     };
     enum label_box_sizes {
         lbox_h = bspace_h*3/2,
@@ -85,7 +87,7 @@ MainWindow::MainWindow()
     int spacing = bspace_w/(3*3);
     int b1_x, b2_x, b_y;
     b1_x = spacing;
-    b2_x = LedCtrlButton::button_w + spacing*2;
+    b2_x = LedControlButton::button_w + spacing*2;
     b_y = bspace_h/4 + lbox_h;
     box[1] = new Fl_Box(0, lbox_h, bspace_w, bspace_h);
     button[0] = new ButtonGreen(b1_x, b_y);
@@ -101,7 +103,7 @@ MainWindow::MainWindow()
 
 int main()
 {
-    MainWindow *w = new MainWindow;
-    w->Show();
+    MainWindow *win = new MainWindow;
+    win->Show();
     return Fl::run();
 }
