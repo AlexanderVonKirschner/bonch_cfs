@@ -12,11 +12,11 @@ class Button : Fl_Button {
 public:
     Button(int x, int y, int w, int h, const char *lb)
         : Fl_Button(x, y, w, h, lb)
-        { callback(CallbackFunction, 0); }
+        { callback(ButtonCallback, 0); }
     virtual ~Button() {}
     virtual void OnPress() {}
 private:
-    static void CallbackFunction(Fl_Widget *w, void *user)
+    static void ButtonCallback(Fl_Widget *w, void *user)
         { static_cast<Button*>(w)->OnPress(); }
 };
 
@@ -39,7 +39,7 @@ public:
     ButtonGreen(int x, int y) : CommonButton(x, y, "GREEN") {}
 private:
     virtual void OnPress() {
-        // kill(getppid(), SIGUSR1);
+        kill(getppid(), SIGUSR1);
     }
 };
 
@@ -48,7 +48,7 @@ public:
     ButtonRed(int x, int y) : CommonButton(x, y, "RED") {}
 private:
     virtual void OnPress() {
-        // kill(getppid(), SIGUSR2);
+        kill(getppid(), SIGUSR2);
     }
 };
 
