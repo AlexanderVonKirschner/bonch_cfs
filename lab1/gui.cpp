@@ -81,15 +81,18 @@ MainWindow::MainWindow()
     const char *message = "What the led do you want\nto turn on?";
     box[0] = new Fl_Box(0, 0, lbox_w, lbox_h, message);
     box[0]->labelsize(18);
-    box[0]->box(FL_UP_BOX);
 
-    int b_y = bspace_h/4 + lbox_h;
     int spacing = bspace_w/(3*3);
+    int b1_x, b2_x, b_y;
+    b1_x = spacing;
+    b2_x = LedCtrlButton::button_w + spacing*2;
+    b_y = bspace_h/4 + lbox_h;
     box[1] = new Fl_Box(0, lbox_h, bspace_w, bspace_h);
-    button[0] = new ButtonGreen(spacing, b_y);
-    button[1] = new ButtonRed(LedCtrlButton::button_w + spacing*2, b_y);
-    box[1]->box(FL_UP_BOX);
+    button[0] = new ButtonGreen(b1_x, b_y);
+    button[1] = new ButtonRed(b2_x, b_y);
 
+    box[0]->box(FL_UP_BOX);
+    box[1]->box(FL_UP_BOX);
     end();
 }
 
