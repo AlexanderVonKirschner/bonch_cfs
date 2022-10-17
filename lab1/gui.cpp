@@ -26,8 +26,8 @@ class LedControlButton : public Button {
     int signo;
 public:
     enum button_sizes {
-        button_h = 30,
         button_w = 100
+        button_h = (button_h/10)*3,
     };
     LedControlButton(int x, int y, const char *lb, int sig)
         : Button(x, y, button_w, button_h, lb), signo(sig) {}
