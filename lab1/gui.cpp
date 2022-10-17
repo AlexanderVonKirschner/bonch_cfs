@@ -26,8 +26,8 @@ class LedControlButton : public Button {
     int signo;
 public:
     enum button_sizes {
-        button_w = 100
-        button_h = (button_h/10)*3,
+        button_h = 30,
+        button_w = 10*button_h/3
     };
     LedControlButton(int x, int y, const char *lb, int sig)
         : Button(x, y, button_w, button_h, lb), signo(sig) {}
@@ -58,6 +58,10 @@ public:
 class MainWindow : Fl_Window {
     Fl_Box *box[2];
     Button *button[2];
+    enum {
+        scr_w = 1920,
+        scr_h = 1080
+    };
     enum buttons_box_sizes {
         bspace_h = LedControlButton::button_h*2,
         bspace_w = LedControlButton::button_w*3
@@ -70,16 +74,20 @@ class MainWindow : Fl_Window {
         win_h = lbox_h + bspace_h,
         win_w = lbox_w
     };
-    enum { font_size = 18 };
+    enum { font_size = lbox_h/5 };
 public:
     MainWindow();
     void Show() { show(); }
+private:
+    static int GetPos(int scr_size, int win_size)
+        { return scr_size/2 - win_size; }
 };
 
 
 
 MainWindow::MainWindow()
-    : Fl_Window(win_w, win_h, "User interface")
+    : Fl_Window(GetPos(scr_w, win_w), GetPos(scr_h, win_h),
+                win_w, win_h, "User interface")
 {
     const char *message = "What the led do you\nwant to turn on?";
     box[0] = new Fl_Box(0, 0, lbox_w, lbox_h, message);
